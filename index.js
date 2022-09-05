@@ -10,7 +10,7 @@ app.use(express.urlencoded({extended : true}))
 app.use('/v1', route)
 
 
-const listener = app.listen(process.env.PORT || 10888, ()=> {
+const listener = app.listen(process.env.PORT || 18888, ()=> {
   console.log(`Server is ready at ${listener.address().port}`)
 })
 
