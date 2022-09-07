@@ -1,5 +1,6 @@
 const { MongoClient, ObjectId } = require("mongodb")
 const mongoAuth = require('../auth/db.config.js')
+const jwt = require("jsonwebtoken")
 
 const mongo_username = mongoAuth.configDB.user
 const mongo_password = mongoAuth.configDB.pwd
@@ -15,14 +16,32 @@ const grange = {
     
   },
   manage(req, res) {
-    
+    console.log("fish pond management")
+    const user = jwt.decode(req.body.token)
+    console.log(user)
+    MongoClient.connect(CONNECTION_URI)
+      .then((db) => {        
+        db.db(DATABASE_NAME).collection("grange").aggregate([{"$match":{"pond.manage": ObjectId(user._id)}}]).toArray((err, grange) => {
+          if(err) {
+            res.status(500).send({"status": 500, "desc": err})
+          } else {
+            console.log(grange)
+            res.send(grange)
+          }
+        })  
+      })
+      .catch ((err) => {
+        console.log(err)
+        res.status(500).send({ "code": 500, "desc": err })
+      })
   },
   owner (req, res) {
     console.log("gain ownership information")
-    const user = req.body.token
+    const user = jwt.decode(req.body.token)
+    console.log(user)
     MongoClient.connect(CONNECTION_URI)
       .then((db) => {        
-        db.db(DATABASE_NAME).collection("grange").find({contact: ObjectId(user)}).toArray((err, grange) => {
+        db.db(DATABASE_NAME).collection("grange").find({contact: ObjectId(user._id)}).toArray((err, grange) => {
           if(err) {
             res.status(500).send({"status": 500, "desc": err})
           } else {

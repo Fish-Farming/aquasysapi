@@ -8,7 +8,6 @@ const grangeRoute = require('./grange.route')
 router.use(userRoute)
 router.use(fishRoute)
 router.use(grangeRoute)
-
 router.use((req, res)=> {
   console.log('Invalid access~')
   res.status(404).send({'code': 404, 'desc': 'Endpoint not found'})
