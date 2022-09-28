@@ -1,7 +1,8 @@
 const { MongoClient, ObjectId } = require("mongodb");
 const mongoAuth = require('../auth/db.config.js');
 const jwt = require("jsonwebtoken");
-const fetch = require('node-fetch');
+//const fetch = require("node-fetch");
+const request = require("request")
 
 const mongo_username = mongoAuth.configDB.user
 const mongo_password = mongoAuth.configDB.pwd
@@ -67,8 +68,20 @@ const grange = {
 
     console.log(`pond sensor group ${sensorID} retrieve from ${yyyy}.${mm}.${dd} `)
     const connectURL = `${aquaapiUrl}/${sensorID}/${yyyy}/${mm}/${dd}`
-    console.log(connectURL)
-    fetch(connectURL)
+    //console.log(connectURL)
+    request(connectURL, (error, response, body) =>{
+      if(error) {
+        res.status(500).send({"status": 500, "desc": error});
+      }
+      console.log(response.statusCode);
+      const content = JSON.parse(body);
+      if(content.data.length>0) {
+        res.send(content.data);
+      } else {
+        res.send([]);    
+      }
+    })
+    /*fetch(connectURL)
       .then((response)=> response.json())
       .then((data)=>{
         console.log(data)
@@ -76,7 +89,7 @@ const grange = {
           res.send(data.data)
         //else 
         //  res.status(404).send({"status":404, "desc": "No data found"})
-      })
+      })*/
   },
   updateGrange (req, res) {
     res.send({"status": 501, "desc": "NExt Phase"});

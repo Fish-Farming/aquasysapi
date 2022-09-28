@@ -17,6 +17,6 @@
     "jsonschema": "^1.4.1",
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^4.9.0",
-    "node-fetch": "^3.2.6"
+    "request": "^2.88.2"
   }
 }
