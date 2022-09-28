@@ -55,7 +55,7 @@ const user = {
         console.log(err)
         res.status(500).send({ "code": 500, "desc": err })
       })
-    
+   
   },
   userUpdate(req, res) {
     //  token: {string} 
