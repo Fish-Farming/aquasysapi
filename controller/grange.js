@@ -75,11 +75,17 @@ const grange = {
       }
       console.log(response.statusCode);
       const content = JSON.parse(body);
-      if(content.data.length>0) {
-        res.send(content.data);
+      // updated
+      if(Object.hasOwn(content, 'data')){
+        if(content.data.length>0) {
+          res.send(content.data);
+        } else {
+          res.send([]);    
+        }
       } else {
-        res.send([]);    
+        res.send([]);
       }
+      // updated end
     })
     /*fetch(connectURL)
       .then((response)=> response.json())
